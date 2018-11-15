@@ -74,6 +74,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Upload Files</label>
+                        <div class="col-md-10">
+                            <input type="file" class="" name="event_files" id="event_files">
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-md-12 text-right">
                             <button type="button" id="btnSave" class="k-primary">Save</button>
                             <button type="button" id="btnCancel">Cancel</button>
@@ -110,14 +116,33 @@
 
                 $("#event_status").kendoComboBox();
 
+                $("#event_files").kendoUpload({
+                    async: {
+                        saveUrl: "files.php?action=save",
+                        removeUrl: "files.php?action=remove",
+                        autoUpload: true
+                    },
+                    multiple: true,
+                    validation: {
+                        allowedExtensions: [".gif", ".jpg", ".png"],
+                        maxFileSize: 1000000
+                    },
+                    success: function (e) {
+                        e.files[0].name = e.response.location;
+                    }
+                });
+
                 var event_start = $("#event_start").data("kendoDateTimePicker");
                 var event_finish = $("#event_finish").data("kendoDateTimePicker");
                 var event_info = $("#event_info").data("kendoEditor");
                 var event_status = $("#event_status").data("kendoComboBox");
+                var event_files = $("#event_files").data("kendoUpload");
 
                 event_start.value(new Date());
                 event_finish.value(new Date());
                 event_info.value("");
+                event_status.value("");
+                event_files.clearAllFiles();
 
                 $("#event_id").val("");
                 $("#event_user").val("");
@@ -138,11 +163,37 @@
                         event_finish.value(moment(data["event_finish"]).toDate());
                         event_info.value(data["event_info"]);
                         event_status.value(data["event_status"]);
+                        event_files.clearAllFiles();
 
                         $("#event_id").val(data["event_id"]);
                         $("#event_user").val(data["event_user"]);
                         $("#event_created").val(data["event_created"]);
                         $("#event_modified").val(data["event_modified"]);
+
+                        if (isJSON(data["event_files"])) {
+                            $("#event_files").data("kendoUpload").destroy();
+                            $("#event_files").detach().insertBefore(".k-upload");
+                            $("#event_files").next().remove();
+
+                            $("#event_files").kendoUpload({
+                                async: {
+                                    saveUrl: "files.php?action=save",
+                                    removeUrl: "files.php?action=remove",
+                                    autoUpload: true
+                                },
+                                multiple: true,
+                                validation: {
+                                    allowedExtensions: [".gif", ".jpg", ".png"],
+                                    maxFileSize: 1000000
+                                },
+                                success: function (e) {
+                                    e.files[0].name = e.response.location;
+                                },
+                                files: JSON.parse(data["event_files"])
+                            });
+
+                            event_files = $("#event_files").data("kendoUpload");
+                        }
                     });
                 }
 
@@ -161,6 +212,7 @@
                                 data["event_finish"] = moment(event_finish.value()).format("YYYY-MM-DD HH:mm:ss");
                                 data["event_info"] = event_info.value();
                                 data["event_status"] = event_status.value();
+                                data["event_files"] = JSON.stringify(event_files.getFiles());
 
                                 data["event_id"] = $("#event_id").val();
                                 data["event_user"] = $("#event_user").val();

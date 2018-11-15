@@ -1,6 +1,6 @@
 <?php
 
-class MyJson {
+class SQJson {
 
     public $file;
 
