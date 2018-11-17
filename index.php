@@ -30,7 +30,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 text-right mb-3">
-                        <button type="button" class="k-primary" onclick="window.location.href = 'formEntry.php';">New</button>
+                        <button type="button" id="btnNew">Add New</button>
                     </div>
                     <div class="col-12">
                         <div id="dataGrid"></div>
@@ -113,6 +113,13 @@
                     ],
                     dataBound: function () {
                         $("#dataGrid .k-command-cell .k-button").attr("style", "min-width: inherit");
+                    }
+                });
+
+                $("#btnNew").kendoButton({
+                    icon: "add",
+                    click: function (e) {
+                        window.location.href = "formEntry.php";
                     }
                 });
             });
