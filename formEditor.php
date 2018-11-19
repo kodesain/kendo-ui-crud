@@ -172,11 +172,10 @@
                         e.files[0].name = e.response.location;
                     },
                     select: function (e) {
-                        var fileInfo = e.files[0];
                         var wrapper = this.wrapper;
 
-                        setTimeout(function () {
-                            filePreview(fileInfo, wrapper);
+                        $.each(e.files, function (key, file) {
+                            filePreview(file, wrapper);
                         });
                     }
                 });
@@ -239,11 +238,10 @@
                                     e.files[0].name = e.response.location;
                                 },
                                 select: function (e) {
-                                    var fileInfo = e.files[0];
                                     var wrapper = this.wrapper;
 
-                                    setTimeout(function () {
-                                        filePreview(fileInfo, wrapper);
+                                    $.each(e.files, function (key, file) {
+                                        filePreview(file, wrapper);
                                     });
                                 },
                                 files: JSON.parse(data["event_files"])

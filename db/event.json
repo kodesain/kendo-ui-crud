@@ -1,0 +1,16 @@
+[
+    {
+        "event_code": "home",
+        "event_name": "home",
+        "event_info": "test 123",
+        "event_start": "2018-11-20 02:13:20",
+        "event_finish": "2018-11-20 02:13:20",
+        "event_status": "AKTIF",
+        "event_files": "[{\"name\":\"upload\/badge-android-min.png\",\"extension\":\".png\",\"size\":5130,\"rawFile\":{},\"uid\":\"142a78b4-ac21-4bff-ac82-c76003d5fe1f\"},{\"name\":\"upload\/badge-php-min.png\",\"extension\":\".png\",\"size\":5091,\"rawFile\":{},\"uid\":\"e687eeda-db69-4223-97fa-914ed7325cdc\"},{\"name\":\"upload\/badge-python-min.png\",\"extension\":\".png\",\"size\":5205,\"rawFile\":{},\"uid\":\"0a7518d6-8499-4667-9a97-d29f299b0c48\"}]",
+        "event_id": 1542654848.708,
+        "event_user": "",
+        "event_created": "2018-11-19 20:14:08",
+        "event_modified": "2018-11-19 20:21:59",
+        "_id": 1542654848.708
+    }
+]
