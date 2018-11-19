@@ -170,6 +170,14 @@
                     },
                     success: function (e) {
                         e.files[0].name = e.response.location;
+                    },
+                    select: function (e) {
+                        var fileInfo = e.files[0];
+                        var wrapper = this.wrapper;
+
+                        setTimeout(function () {
+                            filePreview(fileInfo, wrapper);
+                        });
                     }
                 });
 
@@ -230,10 +238,32 @@
                                 success: function (e) {
                                     e.files[0].name = e.response.location;
                                 },
+                                select: function (e) {
+                                    var fileInfo = e.files[0];
+                                    var wrapper = this.wrapper;
+
+                                    setTimeout(function () {
+                                        filePreview(fileInfo, wrapper);
+                                    });
+                                },
                                 files: JSON.parse(data["event_files"])
                             });
 
                             event_files = $("#event_files").data("kendoUpload");
+
+                            $.each(event_files.options.files, function (key, file) {
+                                var blob = null;
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("GET", file.name);
+                                xhr.responseType = "blob";
+                                xhr.onload = function () {
+                                    blob = xhr.response;
+                                    file.rawFile = new File([blob], file.name, {type: blob.type, lastModified: Date.now()});
+
+                                    filePreview(file, event_files.wrapper);
+                                }
+                                xhr.send();
+                            });
                         }
                     });
                 }
@@ -284,6 +314,20 @@
                     }
                 });
             });
+
+            function filePreview(file, wrapper) {
+                var raw = file.rawFile;
+                var reader = new FileReader();
+
+                if (raw) {
+                    reader.onloadend = function () {
+                        var preview = $("<img class='image-preview'>").attr("src", this.result);
+                        wrapper.find(".k-file[data-uid='" + file.uid + "'] .k-file-extension-wrapper").replaceWith(preview);
+                    };
+
+                    reader.readAsDataURL(raw);
+                }
+            }
         </script>
     </body>
 </html>
