@@ -1,9 +1,9 @@
 <?php
 
-include('db/SQJson.php');
+include('json.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $event = new SQJson('db/event.json');
+    $event = new json('db/event.json');
 
     if (isset_var($_POST['action']) === 'insert') {
         $_id = microtime(true);

@@ -1,6 +1,6 @@
 <?php
 
-class SQJson {
+class json {
 
     public $file;
 
@@ -19,7 +19,7 @@ class SQJson {
             $where = $param['where'];
         }
 
-        $order = NULL;
+        $order = array();
         if ($this->isset_var($param['order'])) {
             $order = $param['order'];
         }
@@ -67,8 +67,19 @@ class SQJson {
                     $last = $l;
                 }
 
-                if ($order != NULL || $order != '') {
-                    $this->array_sort($last, $order);
+                if (!empty($order)) {
+                    $i = 0;
+                    foreach ($order as $key => $value) {
+                        if ($i === 0) {
+                            if (gettype($key) === 'integer') {
+                                $this->array_sort($last, $value);
+                            } else {
+                                $this->array_sort($last, $key, $value);
+                            }
+                        }
+
+                        $i++;
+                    }
                 }
             }
 
